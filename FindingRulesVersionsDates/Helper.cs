@@ -10,14 +10,11 @@ namespace FindingRulesVersionsDates
 {
     class Helper
     {
-        public static ICollection<HtmlNode> GetAllHtmlClausesInFileLoadedFromWeb(string sUrl)
-        {
-            return Helper.GetAllHtmlClausesInHtmlDocument(Helper.GetHtmlDocFromUrl(sUrl));
-        }
         public static ICollection<HtmlNode> GetAllHtmlClausesInHtmlDocument(HtmlDocument oDoc)
         {
             
             ICollection<HtmlNode> arNodesInDoc = oDoc.QuerySelectorAll(".hearot");
+            if (arNodesInDoc.Count==0) arNodesInDoc = oDoc.QuerySelectorAll("td");
             foreach (HtmlNode oNode in arNodesInDoc)
             {
                 oNode.SetAttributeValue("class", oNode.GetAttributeValue("class", "") + " " + "comparableItm");
@@ -35,6 +32,12 @@ namespace FindingRulesVersionsDates
             oHtmlWeb.OverrideEncoding = Encoding.GetEncoding(1255);
             return oHtmlWeb.Load(sUrl);
         }
+        public static HtmlDocument GetHtmlDocFromDisk(string sPath)
+        {
+            HtmlDocument oDoc = new HtmlDocument();
+            oDoc.Load(sPath);
+            return oDoc;
+        }
         public static bool WriteToDB(int iC,string sDate)
         {
             bool bRslt = true;
@@ -47,7 +50,7 @@ namespace FindingRulesVersionsDates
                 SqlCommand cmdWrite = new SqlCommand();
                 cmdWrite.Connection = connWrite;
                 cmdWrite.CommandType = System.Data.CommandType.Text;
-                cmdWrite.CommandText = "update hok_previousversions_legislationdates set dtindoc=convert(datetime,@dt,103) where c=@c";
+                cmdWrite.CommandText = "update hok_previousversions_legislationdates set dtindoc=convert(datetime,@dt,103),isprocessed=1 where c=@c";
                 cmdWrite.Parameters.AddWithValue("@c", iC);
                 cmdWrite.Parameters.AddWithValue("@dt", sDate);
                 cmdWrite.ExecuteNonQuery();
