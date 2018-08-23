@@ -43,11 +43,11 @@ namespace FindingRulesVersionsDates
             string sSql = "";
             if (bTest)
             {
-                sSql = "select top 100 c,hokc from hok_previousversions_legislationdates where isprocessed=1 and dtindoc='01/01/1900' order by hokc,c";
+                sSql = "select top 100 c,hokc from hok_previousversions where isprocessed=1 and dtindoc='01/01/1900' order by hokc,c";
             }
             else
             {
-                sSql = "select top 100 c,hokc from hok_previousversions_legislationdates where isprocessed=0 order by hokc,c";
+                sSql = "select top 100 c,hokc from hok_previousversions where dtindoc is null order by hokc,c";
             }
             SqlConnection connRead = new SqlConnection(sConnStr);
             try

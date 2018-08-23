@@ -50,7 +50,7 @@ namespace FindingRulesVersionsDates
                 SqlCommand cmdWrite = new SqlCommand();
                 cmdWrite.Connection = connWrite;
                 cmdWrite.CommandType = System.Data.CommandType.Text;
-                cmdWrite.CommandText = "update hok_previousversions_legislationdates set dtindoc=convert(datetime,@dt,103),isprocessed=1 where c=@c";
+                cmdWrite.CommandText = "update hok_previousversions set dtindoc=convert(datetime,@dt,103) where c=@c";
                 cmdWrite.Parameters.AddWithValue("@c", iC);
                 cmdWrite.Parameters.AddWithValue("@dt", sDate);
                 cmdWrite.ExecuteNonQuery();
